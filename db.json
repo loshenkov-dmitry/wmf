@@ -18,7 +18,8 @@
       "brand": "Converse",
       "wide": false,
       "category": "Sneakers",
-      "inCart": false
+      "inCart": false,
+      "isSale": "Bestsellers"
     },
     {
       "id": 3,
@@ -29,7 +30,8 @@
       "brand": "Converse",
       "wide": true,
       "category": "Sneakers",
-      "inCart": false
+      "inCart": false,
+      "isSale": "Bestsellers"
     },
     {
       "id": 4,

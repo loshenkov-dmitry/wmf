@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container">
       <div class="header_inner">
-        <a href="/" class="logo">S—Shop</a>
+        <a href="/" class="logo header_logo">S—Shop</a>
         <nav class="header_menu">
           <a href="#" class="color-accent">Catalog</a>
         </nav>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Cart from "@/components/Cart";
+import Cart from '@/components/Cart';
 export default {
   components: {
     Cart,
@@ -31,9 +31,12 @@ export default {
   &_inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     border-bottom: 1px solid #bdbdbd;
     padding: 36px 0;
+  }
+
+  &_logo {
+    margin-right: 247px;
   }
 }
 .logo {
@@ -43,5 +46,10 @@ export default {
   text-transform: uppercase;
   text-decoration: none;
   color: inherit;
+}
+
+.customer {
+  display: flex;
+  margin-left: auto;
 }
 </style>

@@ -6,13 +6,19 @@
         <div class="filters">
           <SearchInput :search="searchStr" @search="searchStr = $event" />
           <Select
-            :selected="selected"
+            :selected="selectedCategory"
             :options="categories"
             @select="sortByCategories"
           />
+
+          <Select
+            :selected="selectedSale"
+            :options="bestsellers"
+            @select="sortBySale"
+          />
         </div>
 
-        <h1 class="page-title">Bestsellers:<br />{{ filteredList.length }}</h1>
+        <h1 class="page-title">Bestsellers:<br />{{ sortedList.length }}</h1>
         <div class="products" v-if="!getLoading && !getError">
           <Product
             v-for="product in sortedList"
@@ -34,23 +40,29 @@
 </template>
 
 <script>
-import SearchInput from "@/components/SearchInput";
-import Select from "@/components/Select";
-import Product from "@/components/Product";
-import Loader from "@/components/Loader";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import SearchInput from '@/components/SearchInput';
+import Select from '@/components/Select';
+import Product from '@/components/Product';
+import Loader from '@/components/Loader';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
       categories: [
-        { name: "Sneakers", value: "Sneakers" },
-        { name: "Other", value: "Other" },
-        { name: "All", value: "" },
+        { name: 'Sneakers', value: 'Sneakers' },
+        { name: 'Other', value: 'Other' },
+        { name: 'All', value: '' },
       ],
-      selected: "Sneakers",
-      searchStr: "",
+      bestsellers: [
+        { name: 'Bestsellers', value: 'Bestsellers' },
+        { name: 'Half Price', value: 'Half Price' },
+        { name: 'No Sale', value: '' },
+      ],
+      selectedCategory: 'Sneakers',
+      selectedSale: 'Bestsellers',
+      searchStr: '',
       sorted: [],
     };
   },
@@ -60,7 +72,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["loadProducts", "productToCart"]),
+    ...mapActions(['loadProducts', 'productToCart']),
 
     sortByCategories(category) {
       this.sorted = [];
@@ -71,7 +83,19 @@ export default {
         }
       });
 
-      this.selected = category.name;
+      this.selectedCategory = category.name;
+    },
+
+    sortBySale(saleType) {
+      this.sorted = [];
+      let vm = this;
+      this.filteredList.map((item) => {
+        if (item.isSale === saleType.name) {
+          vm.sorted.push(item);
+        }
+      });
+
+      this.selectedSale = saleType.name;
     },
 
     addToCart(product) {
@@ -89,7 +113,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getProducts", "getLoading", "getError"]),
+    ...mapGetters(['getProducts', 'getLoading', 'getError']),
 
     filteredList() {
       return this.getProducts.filter((product) => {

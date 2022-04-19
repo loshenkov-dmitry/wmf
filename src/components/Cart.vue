@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import TotalItems from "@/components/TotalItems";
-import { mapActions, mapGetters } from "vuex";
+import TotalItems from '@/components/TotalItems';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -29,14 +29,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(["deleteAllFromCart"]),
+    ...mapActions(['deleteAllFromCart']),
 
     removeAll() {
       this.deleteAllFromCart();
     },
   },
   computed: {
-    ...mapGetters(["getCart"]),
+    ...mapGetters(['getCart']),
   },
   components: {
     TotalItems,
@@ -50,6 +50,17 @@ export default {
   width: 435px;
   z-index: 2;
   background: #fff;
+  // &:after {
+  //   display: block;
+  //   content: '';
+  //   width: 100vw;
+  //   height: 100vh;
+  //   background: rgba(0, 0, 0, 0.6);
+  //   z-index: 2;
+  //   position: absolute;
+  //   left: 0;
+  //   top: 0;
+  // }
 }
 
 .cart {
@@ -59,5 +70,6 @@ export default {
 .cart_title {
   user-select: none;
   cursor: pointer;
+  margin-left: 43px;
 }
 </style>
