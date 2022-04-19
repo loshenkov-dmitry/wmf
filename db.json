@@ -1,0 +1,87 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "image": "1.jpg",
+      "title": "Converse Kids 70",
+      "price": 49.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 2,
+      "image": "2.jpg",
+      "title": "Converse Chuck 70",
+      "price": 49.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 3,
+      "image": "3.jpg",
+      "title": "Converse Chuck 70 Renew High Top ",
+      "price": 50.99,
+      "priceOld": 84.99,
+      "brand": "Converse",
+      "wide": true,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 4,
+      "image": "4.jpg",
+      "title": "Converse Pro Chuck 80",
+      "price": 64.99,
+      "priceOld": 99.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 5,
+      "image": "5.jpg",
+      "title": "Converse Winter Chuck 70",
+      "price": 79.99,
+      "priceOld": 99.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 6,
+      "image": "6.jpg",
+      "title": "Converse Winter Chuck 70 Full Black",
+      "price": 129.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 7,
+      "image": "7.jpg",
+      "title": "Converse Winter Chuck 70 Black/White",
+      "price": 99.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 8,
+      "image": "5.jpg",
+      "title": "Nike Air Max",
+      "price": 99.99,
+      "brand": "Nike",
+      "wide": false,
+      "category": "Other",
+      "inCart": false
+    }
+  ]
+}
