@@ -1,70 +1,65 @@
 <template>
   <div class="cart">
-    <div
-      class="cart_title"
-      :class="{ 'color-accent': cartShown }"
-      @click="cartShown = !cartShown"
-    >
-      Basket <span v-if="getCart.length > 0">({{ getCart.length }})</span>
-    </div>
-    <div class="total" v-show="cartShown">
-      <TotalItems
-        v-if="getCart.length > 0"
-        :items="getCart"
-        @removeAll="removeAll"
-      />
-      <div v-else>Cart is empty</div>
+    <div class="cart_main">
+      <div
+        class="cart_title"
+        :class="{ 'color-accent': getCartShown }"
+        @click="toggleCart"
+      >
+        Basket <span v-if="getCart.length > 0">({{ getCart.length }})</span>
+      </div>
+      <div class="total" v-show="getCartShown">
+        <TotalItems :items="getCart" @removeAll="removeAll" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import TotalItems from '@/components/TotalItems';
-import { mapActions, mapGetters } from 'vuex';
+import TotalItems from "@/components/TotalItems";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      cartShown: false,
-    };
-  },
-
   methods: {
-    ...mapActions(['deleteAllFromCart']),
+    ...mapActions(["deleteAllFromCart", "toggleCartView"]),
+
+    toggleCart() {
+      this.toggleCartView();
+    },
 
     removeAll() {
       this.deleteAllFromCart();
     },
   },
+
   computed: {
-    ...mapGetters(['getCart']),
+    ...mapGetters(["getCart", "getCartShown"]),
   },
+
+  watch: {
+    // getCartShown(newVal) {
+    //   if (newVal) document.documentElement.style.overflow = "hidden";
+    //   else document.documentElement.style.overflow = "auto";
+    // },
+  },
+
   components: {
     TotalItems,
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .total {
   position: absolute;
-  width: 435px;
+  width: 100%;
+  left: 0;
   z-index: 2;
   background: #fff;
-  // &:after {
-  //   display: block;
-  //   content: '';
-  //   width: 100vw;
-  //   height: 100vh;
-  //   background: rgba(0, 0, 0, 0.6);
-  //   z-index: 2;
-  //   position: absolute;
-  //   left: 0;
-  //   top: 0;
-  // }
+  top: 100%;
 }
 
-.cart {
-  position: relative;
+.cart_main {
+  z-index: 3;
 }
 
 .cart_title {

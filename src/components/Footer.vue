@@ -24,7 +24,7 @@ export default {};
   color: #fff;
   flex-shrink: 1;
   &_inner {
-    padding: 8rem 0;
+    padding: 40px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;

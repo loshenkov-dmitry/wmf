@@ -18,8 +18,12 @@ export default {
   },
   watch: {
     search(val) {
-      this.$emit('search', val);
+      this.$emit("search", val);
     },
+  },
+
+  mounted() {
+    this.search = "";
   },
 };
 </script>

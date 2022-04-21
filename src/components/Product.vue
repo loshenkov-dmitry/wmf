@@ -1,5 +1,5 @@
 <template>
-  <div class="product" :class="{ 'product--wide': product.wide }">
+  <div class="product">
     <div class="tag" v-if="product.priceOld">Sale {{ discount }}%</div>
     <div class="product_img">
       <img
@@ -32,8 +32,6 @@ export default {
     isInCart: Boolean,
   },
 
-  watch: {},
-
   computed: {
     discount: function () {
       return Math.round(
@@ -51,6 +49,15 @@ export default {
   flex-direction: column;
   width: calc(25% - 20px);
   position: relative;
+
+  &:nth-child(3) {
+    margin-top: -126px;
+    width: 50%;
+
+    img {
+      height: 781px;
+    }
+  }
 
   img {
     height: 400px;

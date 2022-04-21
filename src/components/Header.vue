@@ -2,12 +2,14 @@
   <header class="header">
     <div class="container">
       <div class="header_inner">
-        <a href="/" class="logo header_logo">S—Shop</a>
-        <nav class="header_menu">
-          <a href="#" class="color-accent">Catalog</a>
-        </nav>
+        <div class="header_main">
+          <a href="/" class="logo header_logo">S—Shop</a>
+          <nav class="header_menu">
+            <a href="#" class="color-accent">Catalog</a>
+          </nav>
+        </div>
         <div class="customer">
-          <a href="/" class="header_link">Profile</a>
+          <a href="/" class="customer_link">Profile</a>
           <Cart />
         </div>
       </div>
@@ -16,7 +18,7 @@
 </template>
 
 <script>
-import Cart from '@/components/Cart';
+import Cart from "@/components/Cart";
 export default {
   components: {
     Cart,
@@ -32,11 +34,17 @@ export default {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #bdbdbd;
-    padding: 36px 0;
   }
 
   &_logo {
     margin-right: 247px;
+  }
+
+  &_main {
+    padding: 36px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 .logo {
@@ -49,7 +57,13 @@ export default {
 }
 
 .customer {
+  padding: 41px 0;
+  width: 455px;
   display: flex;
   margin-left: auto;
+  position: relative;
+  justify-content: flex-end;
+  z-index: 3;
+  background: #fff;
 }
 </style>

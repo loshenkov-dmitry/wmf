@@ -25,9 +25,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.cart-item {
+  display: flex;
+}
 .cart-item_img {
   width: 100px;
   height: 100px;
+  margin-right: 10px;
+  position: relative;
+  &::after {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.04));
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+.cart-item_content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .cart-item_title {
@@ -35,12 +56,15 @@ export default {
   font-size: 16px;
   line-height: 19px;
   color: #818181;
+  margin-bottom: 5px;
 }
 
 .cart-item_price {
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
+  margin-bottom: 5px;
+  text-align: left;
 }
 
 .cart-item_btn {
@@ -52,5 +76,6 @@ export default {
   font-size: 16px;
   line-height: 19px;
   text-decoration: underline;
+  margin-top: auto;
 }
 </style>

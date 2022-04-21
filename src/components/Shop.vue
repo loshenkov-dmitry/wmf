@@ -16,6 +16,8 @@
             :options="bestsellers"
             @select="sortBySale"
           />
+
+          <button class="btn">Apply</button>
         </div>
 
         <h1 class="page-title">Bestsellers:<br />{{ sortedList.length }}</h1>
@@ -35,34 +37,37 @@
       </div>
     </div>
 
+    <Overlay v-if="getCartShown" @closeOverlay="closeOverlay" />
+
     <Footer />
   </div>
 </template>
 
 <script>
-import SearchInput from '@/components/SearchInput';
-import Select from '@/components/Select';
-import Product from '@/components/Product';
-import Loader from '@/components/Loader';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
-import { mapActions, mapGetters } from 'vuex';
+import SearchInput from "@/components/SearchInput";
+import Select from "@/components/Select";
+import Product from "@/components/Product";
+import Loader from "@/components/Loader";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import Overlay from "@/components/Overlay.vue";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       categories: [
-        { name: 'Sneakers', value: 'Sneakers' },
-        { name: 'Other', value: 'Other' },
-        { name: 'All', value: '' },
+        { name: "Sneakers", value: "Sneakers" },
+        { name: "Other", value: "Other" },
+        { name: "All", value: "" },
       ],
       bestsellers: [
-        { name: 'Bestsellers', value: 'Bestsellers' },
-        { name: 'Half Price', value: 'Half Price' },
-        { name: 'No Sale', value: '' },
+        { name: "Bestsellers", value: "Bestsellers" },
+        { name: "Half Price", value: "Half Price" },
+        { name: "No Sale", value: "" },
       ],
-      selectedCategory: 'Sneakers',
-      selectedSale: 'Bestsellers',
-      searchStr: '',
+      selectedCategory: "Sneakers",
+      selectedSale: "Bestsellers",
+      searchStr: "",
       sorted: [],
     };
   },
@@ -72,7 +77,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadProducts', 'productToCart']),
+    ...mapActions(["loadProducts", "productToCart", "toggleCartView"]),
 
     sortByCategories(category) {
       this.sorted = [];
@@ -101,6 +106,10 @@ export default {
     addToCart(product) {
       this.productToCart(product);
     },
+
+    closeOverlay() {
+      this.toggleCartView();
+    },
   },
 
   components: {
@@ -110,10 +119,11 @@ export default {
     Select,
     Header,
     Footer,
+    Overlay,
   },
 
   computed: {
-    ...mapGetters(['getProducts', 'getLoading', 'getError']),
+    ...mapGetters(["getProducts", "getLoading", "getError", "getCartShown"]),
 
     filteredList() {
       return this.getProducts.filter((product) => {
@@ -140,7 +150,7 @@ export default {
 }
 
 .page-title {
-  margin: 0 0 -96px;
+  margin: 0 0 30px;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 40px;
@@ -167,16 +177,19 @@ export default {
   grid-gap: 20px;
 }
 
-.total {
-  position: sticky;
-  top: 25px;
-}
-
 .btn {
-  font-size: 20px;
-  border-radius: 15px;
-  padding: 10px 20px;
+  border-radius: 0;
   cursor: pointer;
   transition: 0.2s;
+  text-align: center;
+  background: #2e2e2e;
+  color: #fff;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  padding: 17px 21px 19px 19px;
+  max-width: 335px;
+  margin-top: auto;
+  border: 1px solid #000000;
 }
 </style>
