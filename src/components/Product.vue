@@ -20,7 +20,7 @@
       :class="{ 'product_btn--incart': isInCart }"
       @click="$emit('addToCart', product)"
     >
-      {{ isInCart ? "Added" : "Add to basket" }}
+      {{ isInCart ? 'Added' : 'Add to basket' }}
     </button>
   </div>
 </template>
@@ -47,12 +47,12 @@ export default {
 .product {
   display: flex;
   flex-direction: column;
-  width: calc(25% - 20px);
+  width: calc(25% - 16px);
   position: relative;
 
   &:nth-child(3) {
     margin-top: -126px;
-    width: 50%;
+    width: calc(50% - 8px);
 
     img {
       height: 781px;
@@ -69,7 +69,7 @@ export default {
     margin-bottom: 15px;
     &:after {
       display: block;
-      content: "";
+      content: '';
       width: 100%;
       height: 100%;
       background: linear-gradient(
@@ -126,7 +126,7 @@ export default {
       color: #b7b7b7;
       position: relative;
       &:after {
-        content: "";
+        content: '';
         position: absolute;
         height: 1px;
         display: block;

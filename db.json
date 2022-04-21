@@ -82,7 +82,27 @@
       "price": 99.99,
       "brand": "Nike",
       "wide": false,
-      "category": "Other",
+      "category": "Sneakers",
+      "inCart": false
+    },
+    {
+      "id": 9,
+      "image": "9.jpg",
+      "title": "Nike T-shirt Blue",
+      "price": 29.99,
+      "brand": "Nike",
+      "wide": false,
+      "category": "Clothes",
+      "inCart": false
+    },
+    {
+      "id": 10,
+      "image": "10.jpg",
+      "title": "Nike T-shirt Olive",
+      "price": 99.99,
+      "brand": "Converse",
+      "wide": false,
+      "category": "Clothes",
       "inCart": false
     }
   ]

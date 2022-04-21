@@ -13,7 +13,7 @@
 
           <Select
             :selected="selectedSale"
-            :options="bestsellers"
+            :options="inSale"
             @select="sortBySale"
           />
 
@@ -61,16 +61,15 @@ export default {
     return {
       categories: [
         { name: 'Sneakers', value: 'Sneakers' },
-        { name: 'Other', value: 'Other' },
+        { name: 'Clothes', value: 'Clothes' },
         { name: 'All', value: '' },
       ],
-      bestsellers: [
+      inSale: [
         { name: 'Bestsellers', value: 'Bestsellers' },
-        { name: 'Half Price', value: 'Half Price' },
         { name: 'No Sale', value: '' },
       ],
-      selectedCategory: 'Sneakers',
-      selectedSale: 'Bestsellers',
+      selectedCategory: 'All',
+      selectedSale: 'No Sale',
       searchStr: '',
       sorted: [],
     };
@@ -98,12 +97,10 @@ export default {
     sortBySale(saleType) {
       this.sorted = [];
       let vm = this;
-      this.filteredList.map((item) => {
-        if (item.isSale === saleType.name) {
-          vm.sorted.push(item);
-        }
+      this.sorted = this.filteredList.filter((item) => {
+        return item.isSale === vm.selectedSale;
       });
-
+      // this.sortedList = this.sorted;
       this.selectedSale = saleType.name;
     },
 

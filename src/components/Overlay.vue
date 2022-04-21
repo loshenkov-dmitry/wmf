@@ -2,11 +2,7 @@
   <div class="overlay" @click="$emit('closeOverlay')"></div>
 </template>
 
-<script>
-export default {};
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
 .overlay {
   width: 100vw;
   height: 100vw;
