@@ -1,11 +1,14 @@
 <template>
   <div class="search">
-    <input class="search_input" type="text" v-model="search" />
-    <button
-      class="search_btn"
-      v-if="search !== ''"
-      @click="search = ''"
-    ></button>
+    <div class="search_title">Search</div>
+    <div class="search_inner">
+      <input class="search_input" type="text" v-model="search" />
+      <button
+        class="search_btn"
+        v-if="search !== ''"
+        @click="search = ''"
+      ></button>
+    </div>
   </div>
 </template>
 
@@ -29,9 +32,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search {
+.search_inner {
   position: relative;
 }
+
+.search_title {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  margin-bottom: 20px;
+}
+
 .search_input {
   width: 100%;
   border: none;

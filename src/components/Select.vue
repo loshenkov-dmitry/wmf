@@ -1,11 +1,12 @@
 <template>
   <div class="select">
-    <p class="title" @click="toggleVisibility">
+    <div class="select_title">{{ selectName }}</div>
+    <p class="select_value" @click="toggleVisibility">
       {{ selected }}
     </p>
-    <div class="options" v-if="areOptionsVisible || isExpanded">
+    <div class="select-options" v-if="areOptionsVisible || isExpanded">
       <p
-        class="select_item"
+        class="select-options_item"
         v-for="option in options"
         :key="option.value"
         @click="selectOption(option)"
@@ -27,11 +28,16 @@ export default {
     },
     selected: {
       type: String,
-      default: '',
+      default: "",
     },
     isExpanded: {
       type: Boolean,
       default: false,
+    },
+
+    selectName: {
+      type: String,
+      default: "Select",
     },
   },
   data() {
@@ -44,7 +50,7 @@ export default {
       this.areOptionsVisible = !this.areOptionsVisible;
     },
     selectOption(option) {
-      this.$emit('select', option);
+      this.$emit("select", option);
       this.areOptionsVisible = false;
     },
     hideSelect() {
@@ -54,10 +60,10 @@ export default {
     },
   },
   mounted() {
-    document.addEventListener('click', this.hideSelect.bind(this), true);
+    document.addEventListener("click", this.hideSelect.bind(this), true);
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.hideSelect);
+    document.removeEventListener("click", this.hideSelect);
   },
 };
 </script>
@@ -69,24 +75,32 @@ export default {
   cursor: pointer;
   text-align: left;
 }
-.title {
-  padding: 17px 21px 19px 19px;
+
+.select_title {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  margin-bottom: 20px;
+}
+.select_value {
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 18px;
+  line-height: 22px;
+  padding: 17px 21px 19px 19px;
   width: 100%;
-  height: 100%;
   margin: 0;
   background: #f5f5f5;
   &:after {
     background-position: center;
     background-image: url("data:image/svg+xml,%3Csvg width='16' height='9' viewBox='0 0 16 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L8 8L15 1' stroke='black'/%3E%3C/svg%3E%0A");
-    content: '';
+    content: "";
     width: 14px;
     height: 7px;
   }
 }
-.select_item {
+.select-options_item {
   margin: 0;
   display: block;
   height: 100%;
@@ -97,7 +111,7 @@ export default {
   font-size: 18px;
   padding: 17px 21px 19px 19px;
 }
-.options {
+.select-options {
   position: absolute;
   width: 100%;
   border: none;
@@ -113,7 +127,7 @@ export default {
   width: 100%;
   z-index: 2;
 }
-.options p:hover {
+.select-options p:hover {
   background: #e7e7e7;
 }
 </style>

@@ -4,34 +4,45 @@
     <div class="shop-body">
       <div class="container">
         <div class="filters">
-          <SearchInput :search="searchStr" @search="searchStr = $event" />
+          <SearchInput :search="searchStr" @search="searchProducts" />
           <Select
             :selected="selectedCategory"
             :options="categories"
+            :selectName="'Product category'"
             @select="sortByCategories"
           />
 
           <Select
             :selected="selectedSale"
             :options="inSale"
+            :selectName="'Sale'"
             @select="sortBySale"
           />
 
-          <button class="btn">Apply</button>
+          <Select
+            :selected="selectedPrice"
+            :options="priceFilter"
+            :selectName="'Sort by price'"
+            @select="sortByPrice"
+          />
+
+          <!-- <button class="btn">Apply</button> -->
         </div>
 
         <h1 class="page-title">
-          {{ selectedSale }}:<br />{{ sortedList.length }}
+          {{ shopTitle }}:<br />{{ sortedList.length }}
         </h1>
 
         <div class="products" v-if="!getLoading && !getError">
-          <Product
-            v-for="product in sortedList"
-            :key="product.id"
-            :product="product"
-            :isInCart="product.inCart"
-            @addToCart="addToCart"
-          />
+          <div class="products_grid">
+            <Product
+              v-for="product in sortedList"
+              :key="product.id"
+              :product="product"
+              :isInCart="product.inCart"
+              @addToCart="addToCart"
+            />
+          </div>
         </div>
 
         <Loader v-else-if="getLoading && !getError" />
@@ -48,30 +59,48 @@
 </template>
 
 <script>
-import SearchInput from '@/components/SearchInput';
-import Select from '@/components/Select';
-import Product from '@/components/Product';
-import Loader from '@/components/Loader';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
-import Overlay from '@/components/Overlay.vue';
-import { mapActions, mapGetters } from 'vuex';
+import SearchInput from "@/components/SearchInput";
+import Select from "@/components/Select";
+import Product from "@/components/Product";
+import Loader from "@/components/Loader";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import Overlay from "@/components/Overlay.vue";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       categories: [
-        { name: 'Sneakers', value: 'Sneakers' },
-        { name: 'Clothes', value: 'Clothes' },
-        { name: 'All', value: '' },
+        { name: "Sneakers", value: "Sneakers" },
+        { name: "Clothes", value: "Clothes" },
+        { name: "All", value: "" },
       ],
       inSale: [
-        { name: 'Bestsellers', value: 'Bestsellers' },
-        { name: 'No Sale', value: '' },
+        { name: "Sale", value: "Sale" },
+        { name: "All", value: "All" },
       ],
-      selectedCategory: 'All',
-      selectedSale: 'No Sale',
-      searchStr: '',
+
+      priceFilter: [
+        {
+          name: "Max Price",
+          value: "maxPrice",
+        },
+        {
+          name: "Min Price",
+          value: "minPrice",
+        },
+        {
+          name: "Default",
+          value: "defaultPriceSort",
+        },
+      ],
+      selectedCategory: "All",
+      selectedSale: "All",
+      selectedPrice: "Default",
+      shopTitle: "Products",
+      searchStr: "",
       sorted: [],
+      searchActive: false,
     };
   },
 
@@ -80,28 +109,89 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadProducts', 'productToCart', 'toggleCartView']),
+    ...mapActions(["loadProducts", "productToCart", "toggleCartView"]),
+
+    searchProducts(val) {
+      this.searchStr = val;
+      if (this.searchStr !== "") {
+        this.searchActive = true;
+      } else {
+        this.searchActive = false;
+      }
+      // this.sorted = [];
+      this.sorted = this.getProducts.filter((product) => {
+        return product.title
+          .toLowerCase()
+          .includes(this.searchStr.toLowerCase());
+      });
+      return this.sorted;
+    },
 
     sortByCategories(category) {
-      this.sorted = [];
-      let vm = this;
-      this.filteredList.map((item) => {
-        if (item.category === category.name) {
-          vm.sorted.push(item);
+      if (!this.searchActive) {
+        this.sorted = [];
+        this.sorted = this.getProducts.filter((item) => {
+          return item.category === category.name;
+        });
+      } else {
+        this.sorted = this.searchProducts(this.searchStr);
+        if (category.name === "All") {
+          this.selectedCategory = category.name;
+          return this.sorted;
         }
-      });
+        this.sorted = this.sorted.filter((item) => {
+          return item.category === category.name;
+        });
+      }
 
       this.selectedCategory = category.name;
+      this.shopTitle = category.name === "All" ? "Products" : category.name;
     },
 
     sortBySale(saleType) {
+      if (!this.searchActive) {
+        this.sorted = [];
+        if (saleType.value === "Sale") {
+          this.shopTitle = saleType.value;
+          this.sorted = this.getProducts.filter((item) => {
+            return item.priceOld;
+          });
+        } else {
+          this.sorted = this.getProducts;
+
+          this.shopTitle = "Products";
+        }
+      } else {
+        this.sorted = this.searchProducts(this.searchStr);
+        if (saleType.value === "Sale") {
+          this.sorted = this.sorted.filter((item) => {
+            return item.priceOld;
+          });
+          this.selectedSale = saleType.name;
+        } else {
+          this.shopTitle = "Products";
+        }
+      }
+      this.selectedSale = saleType.value;
+    },
+
+    sortByPrice(sortType) {
       this.sorted = [];
-      let vm = this;
-      this.sorted = this.filteredList.filter((item) => {
-        return item.isSale === vm.selectedSale;
-      });
-      // this.sortedList = this.sorted;
-      this.selectedSale = saleType.name;
+      if (sortType.value !== "defaultPriceSort") {
+        this.sorted = this.getProducts.sort((a, b) => {
+          return a.price - b.price;
+        });
+
+        if (sortType.value === "maxPrice") {
+          this.sorted.reverse();
+        }
+      } else {
+        this.sorted = this.getProducts.sort((a, b) => {
+          return a.id - b.id;
+        });
+      }
+
+      this.selectedPrice = sortType.name;
     },
 
     addToCart(product) {
@@ -124,7 +214,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getProducts', 'getLoading', 'getError', 'getCartShown']),
+    ...mapGetters(["getProducts", "getLoading", "getError", "getCartShown"]),
 
     filteredList() {
       return this.getProducts.filter((product) => {
@@ -138,7 +228,7 @@ export default {
       if (this.sorted.length) {
         return this.sorted;
       } else {
-        return this.filteredList;
+        return this.getProducts;
       }
     },
   },
@@ -169,7 +259,7 @@ export default {
   line-height: 48px;
 }
 
-.products {
+.products_grid {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;

@@ -104,6 +104,17 @@
       "wide": false,
       "category": "Clothes",
       "inCart": false
+    },
+    {
+      "id": 11,
+      "image": "11.jpg",
+      "title": "Puma T-shirt Red",
+      "price": 69.99,
+      "priceOld": 79.99,
+      "brand": "Puma",
+      "wide": false,
+      "category": "Clothes",
+      "inCart": false
     }
   ]
 }
