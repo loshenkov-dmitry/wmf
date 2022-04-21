@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div class="shop">
     <Header />
     <div class="shop-body">
       <div class="container">
@@ -20,7 +20,10 @@
           <button class="btn">Apply</button>
         </div>
 
-        <h1 class="page-title">Bestsellers:<br />{{ sortedList.length }}</h1>
+        <h1 class="page-title">
+          {{ selectedSale }}:<br />{{ sortedList.length }}
+        </h1>
+
         <div class="products" v-if="!getLoading && !getError">
           <Product
             v-for="product in sortedList"
@@ -30,7 +33,9 @@
             @addToCart="addToCart"
           />
         </div>
+
         <Loader v-else-if="getLoading && !getError" />
+
         <div class="error" v-else-if="!getLoading && getError">
           <h3>Ошибка получения данных</h3>
         </div>
@@ -38,36 +43,35 @@
     </div>
 
     <Overlay v-if="getCartShown" @closeOverlay="closeOverlay" />
-
     <Footer />
   </div>
 </template>
 
 <script>
-import SearchInput from "@/components/SearchInput";
-import Select from "@/components/Select";
-import Product from "@/components/Product";
-import Loader from "@/components/Loader";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Overlay from "@/components/Overlay.vue";
-import { mapActions, mapGetters } from "vuex";
+import SearchInput from '@/components/SearchInput';
+import Select from '@/components/Select';
+import Product from '@/components/Product';
+import Loader from '@/components/Loader';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import Overlay from '@/components/Overlay.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
       categories: [
-        { name: "Sneakers", value: "Sneakers" },
-        { name: "Other", value: "Other" },
-        { name: "All", value: "" },
+        { name: 'Sneakers', value: 'Sneakers' },
+        { name: 'Other', value: 'Other' },
+        { name: 'All', value: '' },
       ],
       bestsellers: [
-        { name: "Bestsellers", value: "Bestsellers" },
-        { name: "Half Price", value: "Half Price" },
-        { name: "No Sale", value: "" },
+        { name: 'Bestsellers', value: 'Bestsellers' },
+        { name: 'Half Price', value: 'Half Price' },
+        { name: 'No Sale', value: '' },
       ],
-      selectedCategory: "Sneakers",
-      selectedSale: "Bestsellers",
-      searchStr: "",
+      selectedCategory: 'Sneakers',
+      selectedSale: 'Bestsellers',
+      searchStr: '',
       sorted: [],
     };
   },
@@ -77,7 +81,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["loadProducts", "productToCart", "toggleCartView"]),
+    ...mapActions(['loadProducts', 'productToCart', 'toggleCartView']),
 
     sortByCategories(category) {
       this.sorted = [];
@@ -123,7 +127,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getProducts", "getLoading", "getError", "getCartShown"]),
+    ...mapGetters(['getProducts', 'getLoading', 'getError', 'getCartShown']),
 
     filteredList() {
       return this.getProducts.filter((product) => {
@@ -145,6 +149,17 @@ export default {
 </script>
 
 <style lang="scss">
+.shop {
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.shop-body {
+  flex-grow: 1;
+}
+
 .error {
   text-align: center;
 }
@@ -155,10 +170,6 @@ export default {
   font-weight: 700;
   font-size: 40px;
   line-height: 48px;
-}
-
-.shop-body {
-  flex-grow: 1;
 }
 
 .products {

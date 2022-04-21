@@ -1,55 +1,57 @@
 <template>
-  <div class="total_inner">
-    <div class="total_header">
-      <h4 class="total_title">Total</h4>
-      <div class="total-table">
-        <div class="total-table-item">
-          <div class="total-table-item_name">Subtotal:</div>
-          <div class="total-table-item_value">
-            {{ (totalSum - totalDiscount).toFixed(2) }}
+  <div class="total">
+    <div class="total_inner">
+      <div class="total_header">
+        <h4 class="total_title">Total</h4>
+        <div class="total-table">
+          <div class="total-table-item">
+            <div class="total-table-item_name">Subtotal:</div>
+            <div class="total-table-item_value">
+              {{ (totalSum - totalDiscount).toFixed(2) }}
+            </div>
+          </div>
+          <div class="total-table-item" v-if="totalDiscount > 0">
+            <div class="total-table-item_name">Sale:</div>
+            <div class="total-table-item_value">{{ totalDiscount }}</div>
+          </div>
+          <div class="total-table-item" v-if="items.length > 0">
+            <div class="total-table-item_name">Content:</div>
+            <button class="total_remove-all" @click="$emit('removeAll')">
+              Remove all
+            </button>
           </div>
         </div>
-        <div class="total-table-item" v-if="totalDiscount > 0">
-          <div class="total-table-item_name">Sale:</div>
-          <div class="total-table-item_value">{{ totalDiscount }}</div>
-        </div>
-        <div class="total-table-item" v-if="items.length > 0">
-          <div class="total-table-item_name">Content:</div>
-          <button class="total_remove-all" @click="$emit('removeAll')">
-            Remove all
-          </button>
-        </div>
       </div>
-    </div>
 
-    <div class="total_sum">
-      <span class="total_sum-title">Order Total:</span>${{ totalSum }}
-    </div>
+      <div class="total_sum">
+        <span class="total_sum-title">Order Total:</span>${{ totalSum }}
+      </div>
 
-    <div class="total-items" v-if="items.length > 0">
-      <TotalItem
-        v-for="item in items"
-        :key="item.id"
-        :product="item"
-        @removeFromCart="deleteFromCart"
-      ></TotalItem>
+      <div class="total-items" v-if="items.length > 0">
+        <TotalItem
+          v-for="item in items"
+          :key="item.id"
+          :product="item"
+          @removeFromCart="deleteFromCart"
+        ></TotalItem>
+      </div>
+      <button class="total_checkout" :disabled="items.length === 0">
+        {{ items.length === 0 ? 'Your cart is empty' : 'Checkout' }}
+      </button>
     </div>
-    <button class="total_checkout" :disabled="items.length === 0">
-      {{ items.length === 0 ? "Your cart is empty" : "Checkout" }}
-    </button>
   </div>
 </template>
 
 <script>
-import TotalItem from "@/components/TotalItem";
-import { mapActions } from "vuex";
+import TotalItem from '@/components/TotalItem';
+import { mapActions } from 'vuex';
 export default {
   props: {
     items: Array,
   },
 
   methods: {
-    ...mapActions(["deleteFromCart"]),
+    ...mapActions(['deleteFromCart']),
   },
 
   computed: {
@@ -170,6 +172,9 @@ export default {
   text-align: left;
   padding: 30px 40px;
   cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='16' viewBox='0 0 10 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 15L8 8L0.999999 1' stroke='white' stroke-width='2'/%3E%3C/svg%3E%0A");
+  background-repeat: no-repeat;
+  background-position: center right 100px;
 
   &:disabled {
     cursor: not-allowed;

@@ -1,6 +1,6 @@
 <template>
   <div class="select">
-    <p class="title" @click="areOptionsVisible = !areOptionsVisible">
+    <p class="title" @click="toggleVisibility">
       {{ selected }}
     </p>
     <div class="options" v-if="areOptionsVisible || isExpanded">
@@ -40,12 +40,17 @@ export default {
     };
   },
   methods: {
+    toggleVisibility() {
+      this.areOptionsVisible = !this.areOptionsVisible;
+    },
     selectOption(option) {
       this.$emit('select', option);
       this.areOptionsVisible = false;
     },
     hideSelect() {
-      this.areOptionsVisible = false;
+      if (this.areOptionsVisible) {
+        this.areOptionsVisible = false;
+      }
     },
   },
   mounted() {

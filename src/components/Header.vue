@@ -4,8 +4,8 @@
       <div class="header_inner">
         <div class="header_main">
           <a href="/" class="logo header_logo">S—Shop</a>
-          <nav class="header_menu">
-            <a href="#" class="color-accent">Catalog</a>
+          <nav class="header-menu">
+            <a href="#" class="header-menu_item color-accent">Catalog</a>
           </nav>
         </div>
         <div class="customer">
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Cart from "@/components/Cart";
+import Cart from '@/components/Cart';
 export default {
   components: {
     Cart,
@@ -65,5 +65,18 @@ export default {
   justify-content: flex-end;
   z-index: 3;
   background: #fff;
+
+  &:after {
+    content: '';
+    height: 100%;
+    position: absolute;
+    right: 0;
+    background: #fff;
+    display: block;
+    top: 0;
+    right: -100px;
+    background: #fff;
+    width: 100px;
+  }
 }
 </style>

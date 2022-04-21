@@ -8,19 +8,18 @@
       >
         Basket <span v-if="getCart.length > 0">({{ getCart.length }})</span>
       </div>
-      <div class="total" v-show="getCartShown">
-        <TotalItems :items="getCart" @removeAll="removeAll" />
-      </div>
+
+      <Total v-show="getCartShown" :items="getCart" @removeAll="removeAll" />
     </div>
   </div>
 </template>
 
 <script>
-import TotalItems from "@/components/TotalItems";
-import { mapActions, mapGetters } from "vuex";
+import Total from '@/components/Total';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   methods: {
-    ...mapActions(["deleteAllFromCart", "toggleCartView"]),
+    ...mapActions(['deleteAllFromCart', 'toggleCartView']),
 
     toggleCart() {
       this.toggleCartView();
@@ -32,7 +31,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getCart", "getCartShown"]),
+    ...mapGetters(['getCart', 'getCartShown']),
   },
 
   watch: {
@@ -43,7 +42,7 @@ export default {
   },
 
   components: {
-    TotalItems,
+    Total,
   },
 };
 </script>
@@ -51,7 +50,7 @@ export default {
 <style lang="scss">
 .total {
   position: absolute;
-  width: 100%;
+  width: calc(100% + 100px);
   left: 0;
   z-index: 2;
   background: #fff;
