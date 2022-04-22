@@ -59,46 +59,46 @@
 </template>
 
 <script>
-import SearchInput from "@/components/SearchInput";
-import Select from "@/components/Select";
-import Product from "@/components/Product";
-import Loader from "@/components/Loader";
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
-import Overlay from "@/components/Overlay.vue";
-import { mapActions, mapGetters } from "vuex";
+import SearchInput from '@/components/SearchInput';
+import Select from '@/components/Select';
+import Product from '@/components/Product';
+import Loader from '@/components/Loader';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import Overlay from '@/components/Overlay.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
       categories: [
-        { name: "Sneakers", value: "Sneakers" },
-        { name: "Clothes", value: "Clothes" },
-        { name: "All", value: "" },
+        { name: 'Sneakers', value: 'Sneakers' },
+        { name: 'Clothes', value: 'Clothes' },
+        { name: 'All', value: '' },
       ],
       inSale: [
-        { name: "Sale", value: "Sale" },
-        { name: "All", value: "All" },
+        { name: 'Sale', value: 'Sale' },
+        { name: 'All', value: 'All' },
       ],
 
       priceFilter: [
         {
-          name: "Max Price",
-          value: "maxPrice",
+          name: 'Max Price',
+          value: 'maxPrice',
         },
         {
-          name: "Min Price",
-          value: "minPrice",
+          name: 'Min Price',
+          value: 'minPrice',
         },
         {
-          name: "Default",
-          value: "defaultPriceSort",
+          name: 'Default',
+          value: 'defaultPriceSort',
         },
       ],
-      selectedCategory: "All",
-      selectedSale: "All",
-      selectedPrice: "Default",
-      shopTitle: "Products",
-      searchStr: "",
+      selectedCategory: 'All',
+      selectedSale: 'All',
+      selectedPrice: 'Default',
+      shopTitle: 'Products',
+      searchStr: '',
       sorted: [],
       searchActive: false,
     };
@@ -109,11 +109,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["loadProducts", "productToCart", "toggleCartView"]),
+    ...mapActions(['loadProducts', 'productToCart', 'toggleCartView']),
 
     searchProducts(val) {
       this.searchStr = val;
-      if (this.searchStr !== "") {
+      if (this.searchStr !== '') {
         this.searchActive = true;
       } else {
         this.searchActive = false;
@@ -129,15 +129,15 @@ export default {
 
     sortByCategories(category) {
       if (!this.searchActive) {
-        this.sorted = [];
-        this.sorted = this.getProducts.filter((item) => {
+        // this.sorted = [];
+        this.sorted = this.sortedList.filter((item) => {
           return item.category === category.name;
         });
       } else {
         this.sorted = this.searchProducts(this.searchStr);
-        if (category.name === "All") {
+        if (category.name === 'All') {
           this.selectedCategory = category.name;
-          return this.sorted;
+          return (this.sorted = this.sortedList);
         }
         this.sorted = this.sorted.filter((item) => {
           return item.category === category.name;
@@ -145,13 +145,13 @@ export default {
       }
 
       this.selectedCategory = category.name;
-      this.shopTitle = category.name === "All" ? "Products" : category.name;
+      this.shopTitle = category.name === 'All' ? 'Products' : category.name;
     },
 
     sortBySale(saleType) {
       if (!this.searchActive) {
         this.sorted = [];
-        if (saleType.value === "Sale") {
+        if (saleType.value === 'Sale') {
           this.shopTitle = saleType.value;
           this.sorted = this.getProducts.filter((item) => {
             return item.priceOld;
@@ -159,36 +159,53 @@ export default {
         } else {
           this.sorted = this.getProducts;
 
-          this.shopTitle = "Products";
+          this.shopTitle = 'Products';
         }
       } else {
         this.sorted = this.searchProducts(this.searchStr);
-        if (saleType.value === "Sale") {
+        if (saleType.value === 'Sale') {
           this.sorted = this.sorted.filter((item) => {
             return item.priceOld;
           });
           this.selectedSale = saleType.name;
         } else {
-          this.shopTitle = "Products";
+          this.shopTitle = 'Products';
         }
       }
       this.selectedSale = saleType.value;
     },
 
     sortByPrice(sortType) {
-      this.sorted = [];
-      if (sortType.value !== "defaultPriceSort") {
-        this.sorted = this.getProducts.sort((a, b) => {
-          return a.price - b.price;
-        });
+      if (!this.searchActive) {
+        this.sorted = [];
+        if (sortType.value !== 'defaultPriceSort') {
+          this.sorted = this.getProducts.sort((a, b) => {
+            return a.price - b.price;
+          });
 
-        if (sortType.value === "maxPrice") {
-          this.sorted.reverse();
+          if (sortType.value === 'maxPrice') {
+            this.sorted.reverse();
+          }
+        } else {
+          this.sorted = this.getProducts.sort((a, b) => {
+            return a.id - b.id;
+          });
         }
       } else {
-        this.sorted = this.getProducts.sort((a, b) => {
-          return a.id - b.id;
-        });
+        // this.sorted = this.searchProducts(this.searchStr);
+        if (sortType.value !== 'defaultPriceSort') {
+          this.sorted = this.sorted.sort((a, b) => {
+            return a.price - b.price;
+          });
+
+          if (sortType.value === 'maxPrice') {
+            this.sorted.reverse();
+          }
+        } else {
+          this.sorted = this.sorted.sort((a, b) => {
+            return a.id - b.id;
+          });
+        }
       }
 
       this.selectedPrice = sortType.name;
@@ -214,21 +231,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getProducts", "getLoading", "getError", "getCartShown"]),
-
-    filteredList() {
-      return this.getProducts.filter((product) => {
-        return product.title
-          .toLowerCase()
-          .includes(this.searchStr.toLowerCase());
-      });
-    },
+    ...mapGetters(['getProducts', 'getLoading', 'getError', 'getCartShown']),
 
     sortedList() {
       if (this.sorted.length) {
         return this.sorted;
       } else {
-        return this.getProducts;
+        return [];
       }
     },
   },
